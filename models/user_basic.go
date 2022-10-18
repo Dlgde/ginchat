@@ -34,3 +34,13 @@ func GetUserList() []*UserBasic {
 	}
 	return data
 }
+
+func CreateUser(user UserBasic) (*gorm.DB, error) {
+	result := utils.DB.Create(&user)
+	if result.Error != nil {
+		fmt.Println("there is a error when create")
+		return nil, result.Error
+	}
+
+	return result, nil
+}
