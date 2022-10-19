@@ -15,6 +15,7 @@ type UserBasic struct {
 	Phone         string `valid:"matches(^1[3-9]{1}\\d{9}$)"`
 	Email         string `valid:"email""`
 	Identity      string
+	Salt          string
 	ClientIp      string
 	LoginTime     time.Time
 	HeartBeatTime time.Time
@@ -25,6 +26,12 @@ type UserBasic struct {
 
 func (table *UserBasic) TableName() string {
 	return "user_basic"
+}
+
+func FindUserByNameAndPwd(name, password string) UserBasic {
+	user := UserBasic{}
+	utils.DB.Where("name = ? and pass_word = ?", name, password).First(&user)
+	return user
 }
 func FindUserByName(name string) UserBasic {
 	user := UserBasic{}
@@ -54,7 +61,6 @@ func CreateUser(user UserBasic) (*gorm.DB, error) {
 		fmt.Println("there is a error when create")
 		return nil, result.Error
 	}
-
 	return result, nil
 }
 

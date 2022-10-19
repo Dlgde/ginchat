@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"ginchat/models"
 
 	"gorm.io/driver/mysql"
@@ -26,19 +25,19 @@ func main() {
 
 	// Create
 	// db.Create(&Product{Code: "D42", Price: 100})
-	user := &models.UserBasic{}
-	user.Name = "小强"
-	db.Create(user)
-
-	// Read
-	// var product Product
-	// fmt.Println(db.First(&product, 1))    // find product with integer primary key
-	// db.First(&product, "code = ?", "D42") // find product with code D42
-	fmt.Println(db.First(user, 1))
-
-	// Update - update product's price to 200
-	// db.Model(&product).Update("Price", 200)
-	db.Model(user).Update("PassWord", "1234")
+	//user := &models.UserBasic{}
+	//user.Name = "小强"
+	//db.Create(user)
+	//
+	//// Read
+	//// var product Product
+	//// fmt.Println(db.First(&product, 1))    // find product with integer primary key
+	//// db.First(&product, "code = ?", "D42") // find product with code D42
+	//fmt.Println(db.First(user, 1))
+	//
+	//// Update - update product's price to 200
+	//// db.Model(&product).Update("Price", 200)
+	//db.Model(user).Update("PassWord", "1234")
 	// Update - update multiple fields
 	// db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
 	// db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
