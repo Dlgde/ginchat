@@ -12,8 +12,8 @@ type UserBasic struct {
 	gorm.Model
 	Name          string
 	PassWord      string
-	Phone         string
-	Email         string
+	Phone         string `valid:"matches(^1[3-9]{1}\\d{9}$)"`
+	Email         string `valid:"email""`
 	Identity      string
 	ClientIp      string
 	LoginTime     time.Time
@@ -25,6 +25,19 @@ type UserBasic struct {
 
 func (table *UserBasic) TableName() string {
 	return "user_basic"
+}
+func FindUserByName(name string) UserBasic {
+	user := UserBasic{}
+	utils.DB.Where("name = ?", name).First(&user)
+	return user
+}
+func FindUserByPhone(phone string) *gorm.DB {
+	user := &UserBasic{}
+	return utils.DB.Where("phone = ?", phone).First(&user)
+}
+func FindUserByEmail(email string) *gorm.DB {
+	user := &UserBasic{}
+	return utils.DB.Where("email = ?", email).First(&user)
 }
 func GetUserList() []*UserBasic {
 	data := make([]*UserBasic, 10)
@@ -56,7 +69,7 @@ func DeleteUser(user UserBasic) (*gorm.DB, error) {
 }
 
 func UpdateUser(user UserBasic) (*gorm.DB, error) {
-	result := utils.DB.Model(&user).Updates(UserBasic{Name: user.Name, PassWord: user.PassWord})
+	result := utils.DB.Model(&user).Updates(UserBasic{Name: user.Name, PassWord: user.PassWord, Email: user.Email, Phone: user.Phone})
 	if result.Error != nil {
 		fmt.Println("there is a error when delete")
 		return nil, result.Error

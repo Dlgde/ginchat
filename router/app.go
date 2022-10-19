@@ -10,7 +10,7 @@ import (
 
 func Router() *gin.Engine {
 	r := gin.Default()
-	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.BasePath = ""
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	//ginSwagger.WrapHandler(swaggerFiles.Handler,
 	//	ginSwagger.URL("http://localhost:8080/swagger/doc.json"),

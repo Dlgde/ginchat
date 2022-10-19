@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"ginchat/models"
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -33,6 +34,13 @@ func CreateUser(c *gin.Context) {
 	user.Name = c.Query("name")
 	password := c.Query("password")
 	repassword := c.Query("repassword")
+	data := models.FindUserByName(user.Name)
+	if data.Name != "" {
+		c.JSON(-1, gin.H{
+			"message": "用户名已经注册",
+		})
+		return
+	}
 	if password != repassword {
 		c.JSON(-1, gin.H{
 			"message": "两次密码不一致",
@@ -78,6 +86,8 @@ func DeleteUser(c *gin.Context) {
 // @param id formData string false "id"
 // @param name formData string false "name"
 // @param password formData string false "password"
+// @param email formData string false "email"
+// @param phone formData string false "phone"
 // @Success 200 {string} json{"code","message"}
 // @Router /usr/updateUser [post]
 func UpdateUser(c *gin.Context) {
@@ -86,15 +96,24 @@ func UpdateUser(c *gin.Context) {
 	user.ID = uint(Id)
 	user.Name = c.PostForm("name")
 	user.PassWord = c.PostForm("password")
-	//fmt.Println("thhis xxxxxx ", c.PostForm("name"))
-	//fmt.Println("this is a test:", user.ID, user.Name)
-	_, err := models.UpdateUser(user)
+	user.Email = c.PostForm("email")
+	user.Phone = c.PostForm("phone")
+	_, err := govalidator.ValidateStruct(user)
 	if err != nil {
 		fmt.Println(err)
-		return
+		c.JSON(200, gin.H{
+			"message": "修改参数不匹配",
+		})
+	} else {
+		_, err = models.UpdateUser(user)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		c.JSON(200, gin.H{
+			"message": "修改用户成功",
+		})
+
 	}
 
-	c.JSON(200, gin.H{
-		"message": "修改用户成功",
-	})
 }
