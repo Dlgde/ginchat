@@ -44,3 +44,23 @@ func CreateUser(user UserBasic) (*gorm.DB, error) {
 
 	return result, nil
 }
+
+func DeleteUser(user UserBasic) (*gorm.DB, error) {
+	result := utils.DB.Delete(&user)
+	if result.Error != nil {
+		fmt.Println("there is a error when delete")
+		return nil, result.Error
+	}
+
+	return result, nil
+}
+
+func UpdateUser(user UserBasic) (*gorm.DB, error) {
+	result := utils.DB.Model(&user).Updates(UserBasic{Name: user.Name, PassWord: user.PassWord})
+	if result.Error != nil {
+		fmt.Println("there is a error when delete")
+		return nil, result.Error
+	}
+
+	return result, nil
+}

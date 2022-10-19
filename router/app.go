@@ -10,15 +10,17 @@ import (
 
 func Router() *gin.Engine {
 	r := gin.Default()
-	docs.SwaggerInfo.BasePath = ""
+	docs.SwaggerInfo.BasePath = "/api/v1"
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	//ginSwagger.WrapHandler(swaggerFiles.Handler,
 	//	ginSwagger.URL("http://localhost:8080/swagger/doc.json"),
 	//	ginSwagger.DefaultModelsExpandDepth(-1))
 
 	r.GET("/index", service.GetIndex)
-	r.GET("/user/getUserList", service.GetUserList)
+	r.GET("/usr/getUserList", service.GetUserList)
 	r.GET("usr/createUser", service.CreateUser)
+	r.GET("usr/deleteUser", service.DeleteUser)
+	r.POST("usr/updateUser", service.UpdateUser)
 
 	return r
 
