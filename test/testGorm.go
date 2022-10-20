@@ -21,7 +21,8 @@ func main() {
 
 	// Migrate the schema
 	// db.AutoMigrate(&Product{})
-	db.AutoMigrate(&models.UserBasic{})
+	//db.AutoMigrate(&models.UserBasic{})
+	db.AutoMigrate(&models.Message{})
 
 	// Create
 	// db.Create(&Product{Code: "D42", Price: 100})
